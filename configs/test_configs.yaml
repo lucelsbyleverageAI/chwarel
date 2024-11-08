@@ -1,0 +1,89 @@
+# Face Detection Testing Configuration File
+# This file contains all test configurations and settings for the face detection pipeline
+
+# Test configurations section defines different processing strategies
+test_configurations:
+  
+  # Baseline configuration - No optimizations, original image size
+  baseline:
+    name: "Baseline"
+    resize_dimensions: [0, 0]  # [0, 0] means keep original image dimensions
+    batch_size: 1             # Process one image at a time (sequential processing)
+    num_workers: 1            # No parallel processing
+    confidence_threshold: 0.5  # Face detection confidence threshold (0-1)
+    align: false 
+    
+  # HD configuration - Optimized for 720p processing
+  hd_optimized:
+    name: "HD_Optimized"
+    resize_dimensions: [1280, 720]  # Standard HD resolution (720p)
+    batch_size: 2                   # Process two images simultaneously
+    num_workers: 2                  # Use two parallel processes
+    confidence_threshold: 0.5       # Standard confidence threshold
+    align: false  
+    
+  # SD configuration - Optimized for speed with lower resolution
+  sd_fast:
+    name: "SD_Fast"
+    resize_dimensions: [640, 480]   # Standard definition resolution
+    batch_size: 4                   # Larger batch size possible with smaller images
+    num_workers: 2                  # Parallel processing
+    confidence_threshold: 0.5       # Standard confidence threshold
+    align: false 
+
+# Ground truth for test dataset
+ground_truth:
+  clear2.png: 1  # Image contains 1 faces
+  blur.png: 1  # Image contains 1 face
+  clear.png: 2  # Image contains 2 faces
+  lighting.png: 1  # Image contains 1 face
+  photo.png: 1  # Image contains 1 face
+  reflection.png: 1  # Image contains 1 face
+  tilt.png: 1  # Image contains 1 face
+  # Add more ground truth entries as needed
+
+
+# Output settings
+output_settings:
+  save_plots: true
+  save_detailed_results: true
+  plots_folder: "data/plots"
+  results_folder: "data/results"
+
+# Logging settings
+logging_settings:
+  log_level: "INFO"
+  log_folder: "logs"
+
+# Notes on configuration parameters:
+#
+# resize_dimensions: [width, height]
+# - Smaller dimensions = faster processing but might miss small faces
+# - [0, 0] means use original image size
+# - Common resolutions:
+#   * HD (1280x720) - Good balance of quality and speed
+#   * SD (640x480) - Fastest processing
+#   * Original - Best quality but slowest
+#
+# batch_size:
+# - Number of images to process simultaneously
+# - Larger batch size can improve throughput but uses more memory
+# - Should be balanced with available system resources
+#
+# num_workers:
+# - Number of parallel processes to use
+# - More workers can improve speed but have overhead
+# - Should not exceed number of CPU cores
+# - Typically 2-4 for most systems
+#
+# confidence_threshold:
+# - Minimum confidence score to consider a face detection valid
+# - Higher values (e.g., 0.8) = fewer false positives but might miss faces
+# - Lower values (e.g., 0.3) = catch more faces but more false positives
+# - 0.5 is a good balance for most cases
+
+# Usage Notes:
+# 1. Each configuration will automatically have an aligned variant created
+#    (e.g., "Baseline" will also have "Baseline_Aligned")
+# 2. The script will create any missing directories specified in paths
+# 3. All paths are relative to the project root directory

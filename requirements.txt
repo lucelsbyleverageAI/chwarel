@@ -1,0 +1,14 @@
+deepface==0.0.93
+Flask==3.0.3
+Flask-Cors==5.0.0
+gunicorn==23.0.0
+mtcnn==1.0.0
+numpy==1.24.3
+opencv-python==4.10.0.84
+pandas==2.2.3
+pillow==11.0.0
+psutil==6.1.0
+seaborn==0.13.2
+tensorflow==2.13.0
+torch==2.5.1
+tqdm==4.67.0
